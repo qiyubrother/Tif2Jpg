@@ -37,28 +37,36 @@ namespace Tif2Jpg
             Console.WriteLine("-- Finished all --");
         }
 
-        private void Convert(string inFileName, string outFileName, Action<bool, string, string> callback)
+        private void Convert(string inFileName, string outFileName, Action<bool, string, string, string> callback)
         {
-            using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            try
             {
-                var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
-                var encoder = new JpegBitmapEncoder();
-                encoder.QualityLevel = 100;
-
-                encoder.Frames.Add(decoder.Frames[0]);
-
-                using (var stream = new FileStream(outFileName, FileMode.Create))
+                Console.Write($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss fff")}]{inFileName} -> {outFileName} ::");
+                using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    encoder.Save(stream);
-                    callback(true, inFileName, outFileName);
+                    var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+                    var encoder = new JpegBitmapEncoder();
+                    encoder.QualityLevel = 100;
+
+                    encoder.Frames.Add(decoder.Frames[0]);
+
+                    using (var stream = new FileStream(outFileName, FileMode.Create))
+                    {
+                        encoder.Save(stream);
+                        callback(true, string.Empty, inFileName, outFileName);
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                callback(false, ex.Message, inFileName, outFileName);
             }
         }
 
-        private void ConvertCallBack(bool result, string inFileName, string outFileName)
+        private void ConvertCallBack(bool result, string errorMessage, string inFileName, string outFileName)
         {
             var status = result ? "OK" : "ERROR";
-            Console.WriteLine($"{inFileName} -> {outFileName} ::{status}");
+            Console.WriteLine($"{status}");
         }
     }
 }
