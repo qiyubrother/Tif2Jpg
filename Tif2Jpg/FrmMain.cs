@@ -41,7 +41,7 @@ namespace Tif2Jpg
         {
             using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
                 var encoder = new JpegBitmapEncoder();
                 encoder.QualityLevel = 100;
 
