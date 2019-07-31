@@ -12,17 +12,27 @@ using System.IO;
 
 namespace Tif2Jpg
 {
-    public partial class Form1 : Form
+    public partial class FrmMain : Form
     {
-        public Form1()
+        public FrmMain()
         {
             InitializeComponent();
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            txtDir.Text = Application.StartupPath;
+        }
         private void btnDo_Click(object sender, EventArgs e)
         {
-
-            Convert("", "", ConvertCallBack);
+            var files = Directory.GetFiles(txtDir.Text, txtSearchPattern.Text, SearchOption.AllDirectories);
+            foreach(var inFileName in files)
+            {
+                var fi = new FileInfo(inFileName);
+                var outFileName = Path.Combine(fi.DirectoryName, fi.Name).ToLower().Replace(".tif", "") + ".jpg";
+                Convert(inFileName, outFileName, ConvertCallBack);
+            }
         }
 
         private void Convert(string inFileName, string outFileName, Action<bool, string, string> callback)
@@ -43,7 +53,8 @@ namespace Tif2Jpg
 
         private void ConvertCallBack(bool result, string inFileName, string outFileName)
         {
-
+            var status = result ? "OK" : "ERROR";
+            Console.WriteLine($"{inFileName} -> {outFileName} ::{status}");
         }
     }
 }
