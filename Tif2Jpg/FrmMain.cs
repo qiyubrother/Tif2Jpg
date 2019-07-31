@@ -33,6 +33,8 @@ namespace Tif2Jpg
                 var outFileName = Path.Combine(fi.DirectoryName, fi.Name).ToLower().Replace(".tif", "") + ".jpg";
                 Convert(inFileName, outFileName, ConvertCallBack);
             }
+
+            Console.WriteLine("-- Finished all --");
         }
 
         private void Convert(string inFileName, string outFileName, Action<bool, string, string> callback)
