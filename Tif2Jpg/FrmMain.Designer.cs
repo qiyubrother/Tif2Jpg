@@ -50,7 +50,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDir.Location = new System.Drawing.Point(15, 29);
             this.txtDir.Name = "txtDir";
-            this.txtDir.Size = new System.Drawing.Size(619, 21);
+            this.txtDir.Size = new System.Drawing.Size(593, 21);
             this.txtDir.TabIndex = 1;
             this.txtDir.Text = ".\\";
             // 
@@ -67,23 +67,23 @@
             // txtSearchPattern
             // 
             this.txtSearchPattern.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearchPattern.Location = new System.Drawing.Point(641, 29);
+            this.txtSearchPattern.Location = new System.Drawing.Point(615, 29);
             this.txtSearchPattern.Name = "txtSearchPattern";
             this.txtSearchPattern.Size = new System.Drawing.Size(49, 21);
             this.txtSearchPattern.TabIndex = 3;
             this.txtSearchPattern.Text = "*.tif";
             // 
-            // Form1
+            // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 93);
+            this.ClientSize = new System.Drawing.Size(676, 93);
             this.Controls.Add(this.txtSearchPattern);
             this.Controls.Add(this.btnDo);
             this.Controls.Add(this.txtDir);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tif to Jpg";
             this.ResumeLayout(false);
