@@ -91,6 +91,10 @@ namespace Tif2Jpg
                 {
                     callback(false, ex.Message, inFileName, outFileName);
                 }
+                finally
+                {
+                    Console.WriteLine();
+                }
             }
         }
 
