@@ -86,14 +86,35 @@ namespace Tif2Jpg
                             callback(true, string.Empty, inFileName, outFileName);
                         }
                     }
+                    // Bmp -> Jpg
+                    var bmpOutFile = outFileName;
+                    inFileName = bmpOutFile;
+                    fi = new FileInfo(inFileName);
+                    outFileName = Path.Combine(fi.DirectoryName, fi.Name).ToLower().Replace(".bmp", "") + ".jpg";
+                    Console.Write($" {inFileName} => {outFileName} ::");
+                    using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        var decoder = new BmpBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+                        var encoder = new JpegBitmapEncoder();
+                        encoder.QualityLevel = 100;
+
+                        encoder.Frames.Add(decoder.Frames[0]);
+                        using (var stream = new FileStream(outFileName, FileMode.Create))
+                        {
+                            encoder.Save(stream);
+                            callback(true, string.Empty, inFileName, outFileName);
+                            Console.WriteLine();
+                        }
+                    }
+                    try
+                    {
+                        File.Delete(bmpOutFile); // 删除中间文件（BMP）
+                    }
+                    catch { }
                 }
                 catch(Exception ex2)
                 {
                     callback(false, ex.Message, inFileName, outFileName);
-                }
-                finally
-                {
-                    Console.WriteLine();
                 }
             }
         }
@@ -113,7 +134,10 @@ namespace Tif2Jpg
             }
             else
             {
+                var fcolor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"{status}");
+                Console.ForegroundColor = fcolor;
             }
         }
     }
