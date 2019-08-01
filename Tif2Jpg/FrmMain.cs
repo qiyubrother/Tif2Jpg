@@ -27,10 +27,13 @@ namespace Tif2Jpg
         private void btnDo_Click(object sender, EventArgs e)
         {
             var files = Directory.GetFiles(txtDir.Text, txtSearchPattern.Text, SearchOption.AllDirectories);
+            int pos = 1;
+            int total = files.Length;
             foreach(var inFileName in files)
             {
                 var fi = new FileInfo(inFileName);
                 var outFileName = Path.Combine(fi.DirectoryName, fi.Name).ToLower().Replace(".tif", "") + ".jpg";
+                Console.Write($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss fff")}][{pos++}/{total}]{inFileName} -> {outFileName} ::");
                 Convert(inFileName, outFileName, ConvertCallBack);
             }
 
@@ -41,7 +44,6 @@ namespace Tif2Jpg
         {
             try
             {
-                Console.Write($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss fff")}]{inFileName} -> {outFileName} ::");
                 using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
@@ -66,7 +68,20 @@ namespace Tif2Jpg
         private void ConvertCallBack(bool result, string errorMessage, string inFileName, string outFileName)
         {
             var status = result ? "OK" : "ERROR";
-            Console.WriteLine($"{status}");
+            if (!result)
+            {
+                var fcolor = Console.ForegroundColor;
+                var bcolor = Console.BackgroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{status}");
+                Console.ForegroundColor = fcolor;
+                Console.BackgroundColor = bcolor;
+            }
+            else
+            {
+                Console.WriteLine($"{status}");
+            }
         }
     }
 }
