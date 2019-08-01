@@ -51,7 +51,6 @@ namespace Tif2Jpg
                     encoder.QualityLevel = 100;
 
                     encoder.Frames.Add(decoder.Frames[0]);
-
                     using (var stream = new FileStream(outFileName, FileMode.Create))
                     {
                         encoder.Save(stream);
@@ -62,6 +61,35 @@ namespace Tif2Jpg
             catch(Exception ex)
             {
                 callback(false, ex.Message, inFileName, outFileName);
+                Console.Write($" Retry {inFileName} -> {outFileName} ::");
+                try
+                {
+                    // 删除outFileName
+                    try
+                    {
+                        File.Delete(outFileName);
+                    }
+                    catch { }
+                    // 保存为 Bitmap 文件
+                    var fi = new FileInfo(inFileName);
+                    outFileName = Path.Combine(fi.DirectoryName, fi.Name).ToLower().Replace(".tif", "") + ".bmp";
+                    using (Stream imageStreamSource = new FileStream(inFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        var decoder = new TiffBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None);
+                        var encoder = new BmpBitmapEncoder();
+
+                        encoder.Frames.Add(decoder.Frames[0]);
+                        using (var stream = new FileStream(outFileName, FileMode.Create))
+                        {
+                            encoder.Save(stream);
+                            callback(true, string.Empty, inFileName, outFileName);
+                        }
+                    }
+                }
+                catch(Exception ex2)
+                {
+                    callback(false, ex.Message, inFileName, outFileName);
+                }
             }
         }
 

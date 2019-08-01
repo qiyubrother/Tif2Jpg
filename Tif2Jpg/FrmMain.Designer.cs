@@ -69,6 +69,7 @@
             this.txtSearchPattern.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearchPattern.Location = new System.Drawing.Point(615, 29);
             this.txtSearchPattern.Name = "txtSearchPattern";
+            this.txtSearchPattern.ReadOnly = true;
             this.txtSearchPattern.Size = new System.Drawing.Size(49, 21);
             this.txtSearchPattern.TabIndex = 3;
             this.txtSearchPattern.Text = "*.tif";
