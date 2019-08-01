@@ -55,6 +55,7 @@ namespace Tif2Jpg
                     {
                         encoder.Save(stream);
                         callback(true, string.Empty, inFileName, outFileName);
+                        Console.WriteLine();
                     }
                 }
             }
@@ -102,13 +103,13 @@ namespace Tif2Jpg
                 var bcolor = Console.BackgroundColor;
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.BackgroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{status}");
+                Console.Write($"{status}");
                 Console.ForegroundColor = fcolor;
                 Console.BackgroundColor = bcolor;
             }
             else
             {
-                Console.WriteLine($"{status}");
+                Console.Write($"{status}");
             }
         }
     }
